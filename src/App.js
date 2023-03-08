@@ -2,6 +2,7 @@
 import React, { useState, Fragment } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { v4 as uuid } from 'uuid'
+import './App.css'
 
 // import AuthenticatedRoute from './components/shared/AuthenticatedRoute'
 import AutoDismissAlert from './components/shared/AutoDismissAlert/AutoDismissAlert'
@@ -12,6 +13,7 @@ import SignUp from './components/auth/SignUp'
 import SignIn from './components/auth/SignIn'
 import SignOut from './components/auth/SignOut'
 import ChangePassword from './components/auth/ChangePassword'
+import Circle from './components/apparel/tshirt'
 
 const App = () => {
 
@@ -79,6 +81,9 @@ const App = () => {
 						deleteAlert={deleteAlert}
 					/>
 				))}
+				<div className="container">
+					<Circle />
+				</div>
 			</Fragment>
 		)
 }

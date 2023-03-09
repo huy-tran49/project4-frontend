@@ -1,0 +1,22 @@
+.tshirt {
+    background-image: url('../../media/tshirt/tshirt-front.png');
+    height: 1200px;
+    width: 925px;
+    background-repeat: no-repeat;
+    margin: 0 auto;
+}
+
+h1 {
+    display: flex;
+    margin: 0 auto;
+}
+
+.draggable-area {
+    position: relative;
+    top: 200px;
+    border: 1px solid black;
+    height: 840px;
+    width: 525px;
+    overflow: hidden;
+    margin: 0 auto;
+}

@@ -1,9 +1,12 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { createOrderSuccess, createOrderFailure } from "../shared/AutoDismissAlert/messages"
+import { createOrder } from "../../api/order"
 
 const CreateOrder = (props) => {
+    const {user, msgAlert} = props
     const currentDate = new Date()
-    console.log(currentDate)
+    console.log('this is current date',currentDate)
     const navigate = useNavigate()
 
     const [order, setOrder] = useState({
@@ -43,10 +46,10 @@ const CreateOrder = (props) => {
 
     const onSubmit = (e) => {
         e.preventDefault()
-        if (court.latitude && court.longitude) {
-        createCourt(user, court)
+
+        createOrder(user, order)
             // first we'll nav to the show page
-            .then(res => { navigate(`/courts/${res.data.court._id}`)})
+            .then(res => { navigate(`/order/${res.data.order._id}`)})
             // we'll also send a success message
             .then(() => {
                 msgAlert({
@@ -63,13 +66,7 @@ const CreateOrder = (props) => {
                     variant: 'danger'
                 })
             })
-        } else {
-            msgAlert({
-                heading: 'Uh oh!',
-                message: "Please choose a valid address",
-                variant: 'danger'
-            })
-        }   
+   
     }
 
     return(

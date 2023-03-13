@@ -14,6 +14,7 @@ import SignIn from './components/auth/SignIn'
 import SignOut from './components/auth/SignOut'
 import ChangePassword from './components/auth/ChangePassword'
 import OrderIndex from './components/order/ShowAllOrder'
+import CreateOrder from './components/order/CreateOrder'
 
 const App = () => {
 
@@ -47,7 +48,6 @@ const App = () => {
 				<Header user={user} />
 				<Routes>
 					<Route path='/' element={<Home msgAlert={msgAlert} user={user} />} />
-					<Route path='/order' element={<OrderIndex msgAlert={msgAlert} user={user} />} />
 					<Route
 						path='/sign-up'
 						element={<SignUp msgAlert={msgAlert} setUser={setUser} />}
@@ -69,6 +69,19 @@ const App = () => {
 						element={
 						<RequireAuth user={user}>
 							<ChangePassword msgAlert={msgAlert} user={user} />
+						</RequireAuth>}
+					/>
+					<Route path='/order' 
+						element= {
+						<RequireAuth user={user}>
+							<OrderIndex msgAlert={msgAlert} user={user}/>
+						</RequireAuth>} 
+					/>
+					<Route
+						path='/order/create'
+						element={
+						<RequireAuth user={user}>
+							<CreateOrder msgAlert={msgAlert} user={user} />
 						</RequireAuth>}
 					/>
 				</Routes>

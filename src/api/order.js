@@ -1,11 +1,17 @@
 import apiUrl from '../apiConfig'
 import axios from 'axios'
 
-export const showAllOrder = () => {
-    return axios(`${apiUrl}/order`)
+export const getAllOrder = (user) => {
+    return axios({
+        url: `${apiUrl}/order`,
+        method: 'GET',
+        headers: {
+            Authorization: `Token token=${user.token}`
+        },
+    })
 }
 
-export const showOneOrder = (id) => {
+export const getOneOrder = (id) => {
     return axios(`${apiUrl}/order/${id}`)
 }
 

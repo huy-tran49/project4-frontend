@@ -7,7 +7,7 @@ const Home = (props) => {
 
 	return (
 		<>
-			<TShirt />
+			<h1>Welcome to StyleX</h1>
 		</>
 	)
 }

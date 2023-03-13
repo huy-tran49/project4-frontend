@@ -8,6 +8,7 @@ const messages = {
 	changePasswordFailure:'Failed to change passwords. Check your old password and try again.',
 	createOrderSuccess: 'Order created',
 	createOrderFailure: 'Fail to create order',
+	getOrdersFailure: 'Fail to get orders',
 }
 
 module.exports = messages

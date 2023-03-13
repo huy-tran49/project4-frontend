@@ -2,11 +2,16 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { createOrderSuccess, createOrderFailure } from "../shared/AutoDismissAlert/messages"
 import { createOrder } from "../../api/order"
+import TShirt from "../apparel/TShirt"
+import { Container, Form, Button} from "react-bootstrap"
+import html2canvas from "html2canvas"
+import { uploadFile } from "react-s3"
+import ImageDataURI from "image-data-uri"
+
 
 const CreateOrder = (props) => {
     const {user, msgAlert} = props
     const currentDate = new Date()
-    console.log('this is current date',currentDate)
     const navigate = useNavigate()
 
     const [order, setOrder] = useState({
@@ -36,7 +41,7 @@ const CreateOrder = (props) => {
                 [updatedName] : updatedValue
             }
             
-            console.log('the court', updatedOrder)
+            console.log('the order', updatedOrder)
 
             return {
                 ...prevOrder, ...updatedOrder
@@ -49,7 +54,7 @@ const CreateOrder = (props) => {
 
         createOrder(user, order)
             // first we'll nav to the show page
-            .then(res => { navigate(`/order/${res.data.order._id}`)})
+            .then(res => { navigate(`/order`)})
             // we'll also send a success message
             .then(() => {
                 msgAlert({
@@ -66,16 +71,86 @@ const CreateOrder = (props) => {
                     variant: 'danger'
                 })
             })
-   
     }
 
+    const s3Config = {
+        bucketName: 'stylex-store',
+        region: 'us-east-1',
+        accessKeyId: 'AKIAW2M3IQTH3XGMJBWM',
+        secretAccessKey: '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',
+        
+    }
+
+
+    const imageCapture = async () => {
+        const input = document.getElementById("divForCapture")
+        let image
+        await html2canvas(input)
+            .then(canvas => {
+            const imgData = canvas.toDataURL('image/png')
+            image = ImageDataURI.decode(imgData)
+            console.log(image)
+        })
+        uploadFile(image, s3Config)
+            .then(data => console.log(data))
+            .catch(err => console.error(err))
+        }
+
+        
     return(
         <>
-            {/* <OrderForm
-                handleChange={onChange}
-                handleSubmit={onSubmit}
-                heading="Add a new order!"
-            /> */}
+            <Container >
+                <Form onSubmit={onSubmit}>
+                    <Form.Group className="m-2">
+                        <Form.Label>Name:</Form.Label>
+                        <Form.Control 
+                            placeholder="Enter a name for the order"
+                            name="name"
+                            id="name"
+                            value={ order.name }
+                            onChange={onChange}
+                            required
+                            />
+                    </Form.Group>
+                    <Form.Group className="m-2">
+                        <Form.Label>Quantity:</Form.Label>
+                        <Form.Control 
+                            placeholder="Enter a quantity for the order"
+                            name="quantity"
+                            id="quantity"
+                            value={ order.quantity }
+                            onChange={onChange}
+                            required
+                            />
+                    </Form.Group>
+                    <Form.Group className="m-2">
+                        <Form.Label>Front Design:</Form.Label>
+                        <Form.Control 
+                            // placeholder="Enter a quantity for the order"
+                            name="designFront"
+                            id="designFront"
+                            value={ order.designFront }
+                            // onChange={handleChange}
+                            />
+                    </Form.Group>
+                    <Form.Group className="m-2">
+                        <Form.Label>Back Design:</Form.Label>
+                        <Form.Control 
+                            // placeholder="Enter a quantity for the order"
+                            name="designBack"
+                            id="designBack"
+                            value={ order.designBack }
+                            // onChange={handleChange}
+                            />
+                    </Form.Group>
+                    <Button className="m-2" type="submit">Submit</Button>
+                </Form>
+            </Container>
+            <TShirt />
+            <div>
+                <button onClick={imageCapture}>Save Design</button>
+            </div>
+        
         </>
     )
 }

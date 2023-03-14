@@ -5,9 +5,9 @@ import { createOrder } from "../../api/order"
 import TShirt from "../apparel/TShirt"
 import { Container, Form, Button} from "react-bootstrap"
 import html2canvas from "html2canvas"
-import { uploadFile } from "react-s3"
 import ImageDataURI from "image-data-uri"
-
+import UploadWidget from "../shared/UploadWidget"
+import { CloudinaryUploadImage } from "../../api/cloudinary"
 
 const CreateOrder = (props) => {
     const {user, msgAlert} = props
@@ -73,28 +73,17 @@ const CreateOrder = (props) => {
             })
     }
 
-    const s3Config = {
-        bucketName: 'stylex-store',
-        region: 'us-east-1',
-        accessKeyId: 'AKIAW2M3IQTH3XGMJBWM',
-        secretAccessKey: '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',
-        
-    }
-
-
     const imageCapture = async () => {
         const input = document.getElementById("divForCapture")
         let image
         await html2canvas(input)
             .then(canvas => {
-            const imgData = canvas.toDataURL('image/png')
-            image = ImageDataURI.decode(imgData)
-            console.log(image)
+            image = canvas.toDataURL('image/png')
         })
-        uploadFile(image, s3Config)
-            .then(data => console.log(data))
-            .catch(err => console.error(err))
-        }
+        
+        CloudinaryUploadImage(image)
+     
+    }
 
         
     return(
@@ -150,7 +139,7 @@ const CreateOrder = (props) => {
             <div>
                 <button onClick={imageCapture}>Save Design</button>
             </div>
-        
+            <UploadWidget user={user} msgAlert={msgAlert}/>
         </>
     )
 }

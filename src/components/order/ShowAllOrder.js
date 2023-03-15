@@ -12,12 +12,12 @@ const linkStyle = {
 
 const OrderIndex = (props) => {
     const {user, msgAlert} = props
-    const [orders, setOrder] = useState(null)
+    const [orders, setOrders] = useState(null)
     const [error, setError] = useState(false)
 
     useEffect(()=>{
         getAllOrder(user)
-            .then(res => setOrder(res.data.orders))
+            .then(res => setOrders(res.data.orders))
             .catch(err => {
                 msgAlert({
                     heading: 'Error getting courts',

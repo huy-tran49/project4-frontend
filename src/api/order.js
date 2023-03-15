@@ -11,8 +11,14 @@ export const getAllOrder = (user) => {
     })
 }
 
-export const getOneOrder = (id) => {
-    return axios(`${apiUrl}/order/${id}`)
+export const getOneOrder = (user, id) => {
+    return axios({
+        url: `${apiUrl}/order/${id}`,
+        method: 'GET',
+        headers: {
+            Authorization: `Token token=${user.token}`
+        },
+    })
 }
 
 export const createOrder = (user, newOrder) => {

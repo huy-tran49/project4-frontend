@@ -10,3 +10,8 @@ export const CloudinaryUploadImage = (base64EncodedImage) => {
         data: { data: base64EncodedImage }
     })
 }
+
+export const FetchURL = async () => {
+    return axios.get(`${apiUrl}/api/upload`)
+        .then((res)=> res.data)
+}

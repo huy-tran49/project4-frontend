@@ -1,14 +1,23 @@
 import { useEffect,useRef, useState } from "react"
 import { Button } from "react-bootstrap"
 import messages from "./AutoDismissAlert/messages"
-
+import { addImage } from "../../api/image"
+import TShirt from "../apparel/TShirt"
 
 const UploadWidget = (props) => {
     const {user, msgAlert} = props
     const [pictureURL, setPictureURL] = useState(null)
     const [state, setState] = useState(false)
-    const [uploadPicture, setUploadPicture] = useState(null)
+    const [pictureHeight, setPictureHeight] = useState(null)
+    const [pictureWidth, setPictureWidth] = useState(null)
 
+    const [design, setDesign] = useState({
+        url:'',
+        height:'',
+        width:'',  
+    })
+
+    
     const cloudinaryRef = useRef()
     const widgetRef = useRef()
     useEffect(() => {
@@ -21,16 +30,38 @@ const UploadWidget = (props) => {
             
             if (result.event === 'success') {
                 setPictureURL(result.info.secure_url)
+                setPictureHeight(result.info.height)
+                setPictureWidth(result.info.width)
                 console.log('this is pictureURL in if loop',pictureURL)
                 setState(true)
             } 
         })
         
     })
-  
+    
+    useEffect(()=> {
+        if (state === true) { 
+            design.url = pictureURL
+            design.height = pictureHeight
+            design.width = pictureWidth
+            console.log(design)
+            setState(false)
+            addImage(user, design)
+                .catch(() => {
+                    msgAlert({
+                        heading: 'Oh No!',
+                        message: messages.addImageFailure,
+                        variant: 'danger'
+                    })
+            })
+            
+        }
+        
+    })
 
     return (
         <>
+        <TShirt design={design} />
         <Button className="m-2" onClick={()=> {widgetRef.current.open()}}>
             Upload Picture
         </Button>

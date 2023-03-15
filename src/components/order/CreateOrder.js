@@ -2,12 +2,12 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { createOrderSuccess, createOrderFailure } from "../shared/AutoDismissAlert/messages"
 import { createOrder } from "../../api/order"
-import TShirt from "../apparel/TShirt"
+// import TShirt from "../apparel/TShirt"
 import { Container, Form, Button} from "react-bootstrap"
 import html2canvas from "html2canvas"
-import ImageDataURI from "image-data-uri"
+
 import UploadWidget from "../shared/UploadWidget"
-import { CloudinaryUploadImage } from "../../api/cloudinary"
+import { CloudinaryUploadImage, FetchURL } from "../../api/cloudinary"
 
 const CreateOrder = (props) => {
     const {user, msgAlert} = props
@@ -80,9 +80,9 @@ const CreateOrder = (props) => {
             .then(canvas => {
             image = canvas.toDataURL('image/png')
         })
-        
-        CloudinaryUploadImage(image)
-     
+        //upload image to cloudinary after screen capture
+        await CloudinaryUploadImage(image)
+        console.log()
     }
 
         
@@ -135,11 +135,11 @@ const CreateOrder = (props) => {
                     <Button className="m-2" type="submit">Submit</Button>
                 </Form>
             </Container>
-            <TShirt />
-            <div>
-                <button onClick={imageCapture}>Save Design</button>
-            </div>
             <UploadWidget user={user} msgAlert={msgAlert}/>
+            <div>
+                <Button className="m-2" onClick={imageCapture}>Save Design</Button>
+            </div>
+            
         </>
     )
 }

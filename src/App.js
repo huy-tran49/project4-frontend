@@ -15,6 +15,8 @@ import SignOut from './components/auth/SignOut'
 import ChangePassword from './components/auth/ChangePassword'
 import OrderIndex from './components/order/ShowAllOrder'
 import CreateOrder from './components/order/CreateOrder'
+import ShowOrder from './components/order/ShowOrder'
+
 
 const App = () => {
 
@@ -59,30 +61,44 @@ const App = () => {
 					<Route
 						path='/sign-out'
 						element={
-						<RequireAuth user={user}>
-							<SignOut msgAlert={msgAlert} clearUser={clearUser} user={user} />
-						</RequireAuth>
+							<RequireAuth user={user}>
+								<SignOut msgAlert={msgAlert} clearUser={clearUser} user={user} />
+							</RequireAuth>
 						}
 					/>
 					<Route
 						path='/change-password'
 						element={
-						<RequireAuth user={user}>
-							<ChangePassword msgAlert={msgAlert} user={user} />
-						</RequireAuth>}
+							<RequireAuth user={user}>
+								<ChangePassword msgAlert={msgAlert} user={user} />
+							</RequireAuth>}
 					/>
 					<Route path='/order' 
 						element= {
-						<RequireAuth user={user}>
-							<OrderIndex msgAlert={msgAlert} user={user}/>
-						</RequireAuth>} 
+							<RequireAuth user={user}>
+								<OrderIndex msgAlert={msgAlert} user={user}/>
+							</RequireAuth>} 
 					/>
 					<Route
 						path='/order/create'
 						element={
-						<RequireAuth user={user}>
-							<CreateOrder msgAlert={msgAlert} user={user} />
-						</RequireAuth>}
+							<RequireAuth user={user}>
+								<CreateOrder msgAlert={msgAlert} user={user} />
+							</RequireAuth>}
+					/>
+					<Route 
+						path='/order/:id'
+						element={
+							<RequireAuth user={user}>
+								<ShowOrder msgAlert={msgAlert} user={user} />
+							</RequireAuth>}
+					/>
+					<Route 
+						path='/image'
+						element={
+							<RequireAuth user={user}>
+								<ShowOrder msgAlert={msgAlert} user={user} />
+							</RequireAuth>}
 					/>
 				</Routes>
 				{msgAlerts.map((msgAlert) => (

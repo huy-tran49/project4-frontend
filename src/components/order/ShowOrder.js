@@ -1,15 +1,16 @@
 import { Container, Card, Button, Row, Col } from 'react-bootstrap'
 import { useState, useEffect } from 'react'
 import { getOneOrder } from '../../api/order'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, Navigate } from 'react-router-dom'
 import messages from '../shared/AutoDismissAlert/messages'
-
+import { deleteOrder } from '../../api/order'
 
 const ShowOrder = (props) => {
     const [order, setOrder] = useState(null)
     const { user, msgAlert } = props
     const { id } = useParams()
-    
+    const navigate = useNavigate()
+
     useEffect(() => {
         getOneOrder(user, id)
             .then(res => {
@@ -24,6 +25,27 @@ const ShowOrder = (props) => {
             })
     },[])
 
+
+    const destroyOrder = () => {
+        deleteOrder(user, id)
+            .then(res => { navigate(`/order`)})
+            .then(() => {
+                msgAlert({
+                    heading: 'Order Deleted',
+                    message: 'Bye Bye!',
+                    variant: 'success'
+                })
+            })
+            .catch(() => {
+                msgAlert({
+                    heading: 'Oh No!',
+                    message: 'Something went wrong!',
+                    variant: 'danger'
+                })
+            })
+        
+    }
+
     if(!order){
         return ( <h1>Order Details</h1> )
     } else {
@@ -32,10 +54,9 @@ const ShowOrder = (props) => {
 
         <h1>Order Details</h1>
         <Container className="">
-                <Row>
-                <Col>
+                
                 <Card style={{ height: '100%'}}>
-                <Card.Header style={{ backgroundColor: '#FC9047'}}><h5>{ order.name }</h5></Card.Header>
+                <Card.Header><h5>{ order.name }</h5></Card.Header>
 
                     <Card.Body>
                             <Row> 
@@ -69,9 +90,17 @@ const ShowOrder = (props) => {
                                 </Card.Text>
                             </Row>
                     </Card.Body>
+                    <Card.Footer>
+                        <Button 
+                            onClick={() => destroyOrder()} 
+                            variant="danger"
+                            className="m-2"
+                        >
+                            Delete Order
+                        </Button>
+                    </Card.Footer>
                     </Card>
-                </Col>
-                </Row>
+                
         </Container>
         </>
     )

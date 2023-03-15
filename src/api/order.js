@@ -43,3 +43,14 @@ export const updateOrder = (user, updatedOrder) => {
     })
 }
 
+// DELETE
+export const deleteOrder = (user, orderId) => {
+    // console.log('this the reviewId', reviewId)
+    return axios({
+        url: `${apiUrl}/order/${orderId}`,
+        method: 'DELETE',
+        headers: {
+            Authorization: `Token token=${user.token}`
+        }
+    })
+}

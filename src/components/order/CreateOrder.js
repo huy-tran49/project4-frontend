@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { createOrderSuccess, createOrderFailure } from "../shared/AutoDismissAlert/messages"
+import './CreateOrder.css'
 import { createOrder } from "../../api/order"
 // import TShirt from "../apparel/TShirt"
 import { Container, Form, Button} from "react-bootstrap"
@@ -82,13 +83,13 @@ const CreateOrder = (props) => {
         })
         //upload image to cloudinary after screen capture
         await CloudinaryUploadImage(image)
-        console.log()
+        
     }
 
         
     return(
         <>
-            <Container >
+            <Container className= "form-container">
                 <Form onSubmit={onSubmit}>
                     <Form.Group className="m-2">
                         <Form.Label>Name:</Form.Label>
@@ -122,24 +123,16 @@ const CreateOrder = (props) => {
                             // onChange={handleChange}
                             />
                     </Form.Group>
-                    <Form.Group className="m-2">
-                        <Form.Label>Back Design:</Form.Label>
-                        <Form.Control 
-                            // placeholder="Enter a quantity for the order"
-                            name="designBack"
-                            id="designBack"
-                            value={ order.designBack }
-                            // onChange={handleChange}
-                            />
-                    </Form.Group>
+                   
                     <Button className="m-2" type="submit">Submit</Button>
                 </Form>
             </Container>
-            <UploadWidget user={user} msgAlert={msgAlert}/>
-            <div>
+            <Container className="image-form-container">
+                <UploadWidget user={user} msgAlert={msgAlert}/>
+                
                 <Button className="m-2" onClick={imageCapture}>Save Design</Button>
-            </div>
-            
+            </Container>
+          
         </>
     )
 }
